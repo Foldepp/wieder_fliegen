@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff3ee">
+  <title>Little Butterfly</title>
+  <style>
+    :root {
+      --paper: #fff8f2;
+      --paper-warm: #fff1e8;
+      --rose: #f4c5ca;
+      --rose-deep: #b86f83;
+      --peach: #ffd9bd;
+      --sky: #c7def4;
+      --mint: #cfe9da;
+      --lavender: #d8cef4;
+      --gold: #d8a94f;
+      --ink: #4b3b45;
+      --soft: #7d6f78;
+      --fox: #b96941;
+      --line: rgba(75, 59, 69, 0.14);
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      color: var(--ink);
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(244, 197, 202, 0.72), transparent 18rem),
+        radial-gradient(circle at 86% 12%, rgba(199, 222, 244, 0.86), transparent 20rem),
+        radial-gradient(circle at 80% 82%, rgba(207, 233, 218, 0.72), transparent 22rem),
+        linear-gradient(160deg, #fff8f2 0%, #fff1e8 46%, #f7f0ff 100%);
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      min-height: 100dvh;
+      touch-action: manipulation;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .book {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    .sky {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .cloud {
+      position: absolute;
+      width: 18rem;
+      height: 7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.48);
+      filter: blur(1px);
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    .cloud.one { left: -4rem; top: 13%; }
+    .cloud.two { right: -6rem; top: 32%; width: 22rem; animation-duration: 23s; }
+    .cloud.three { left: 12%; bottom: 13%; width: 16rem; animation-duration: 27s; }
+
+    @keyframes drift {
+      from { transform: translateX(-12px); }
+      to { transform: translateX(28px); }
+    }
+
+    .page {
+      position: absolute;
+      inset: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 10px;
+      max-width: 720px;
+      margin: 0 auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(100vw - 24px, 720px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 38px;
+      padding: 0 2px;
+    }
+
+    .brand {
+      font: 700 13px/1.1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(75, 59, 69, 0.62);
+    }
+
+    .counter {
+      min-width: 70px;
+      text-align: right;
+      font: 600 12px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: rgba(75, 59, 69, 0.52);
+    }
+
+    .scene {
+      position: relative;
+      min-height: 0;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 10px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 248, 242, 0.18)),
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.8), transparent 19rem);
+      box-shadow: 0 18px 54px rgba(125, 111, 120, 0.17);
+    }
+
+    .story-text {
+      position: absolute;
+      z-index: 6;
+      left: 18px;
+      right: 18px;
+      top: 16px;
+      min-height: 148px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.76);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.56);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 34px rgba(125, 111, 120, 0.11);
+    }
+
+    .chapter {
+      margin: 0 0 8px;
+      font: 700 12px/1.2 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+    }
+
+    .line {
+      margin: 0;
+      font-size: clamp(22px, 6.4vw, 34px);
+      line-height: 1.13;
+      color: var(--ink);
+    }
+
+    .fox-note {
+      position: absolute;
+      z-index: 7;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 13px 14px;
+      border-radius: 8px;
+      background: rgba(255, 249, 239, 0.78);
+      border: 1px solid rgba(216, 169, 79, 0.28);
+      box-shadow: 0 14px 32px rgba(125, 111, 120, 0.12);
+      font: 14px/1.35 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--soft);
+    }
+
+    .fox-icon {
+      width: 44px;
+      height: 44px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .fox-icon::before {
+      content: "";
+      width: 34px;
+      height: 28px;
+      background: linear-gradient(145deg, #d78956, var(--fox));
+      clip-path: polygon(0 38%, 18% 0, 38% 25%, 50% 14%, 62% 25%, 82% 0, 100% 38%, 78% 100%, 50% 82%, 22% 100%);
+      filter: drop-shadow(0 6px 10px rgba(185, 105, 65, 0.2));
+    }
+
+    .world {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding-top: 72px;
+    }
+
+    .thread {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 52%;
+      width: 3px;
+      height: 40%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(216, 169, 79, 0.2), rgba(216, 169, 79, 0.88), rgba(216, 169, 79, 0.12));
+      box-shadow: 0 0 22px rgba(216, 169, 79, 0.42);
+      transform-origin: top;
+      transition: width 240ms ease, box-shadow 240ms ease, opacity 240ms ease;
+    }
+
+    .holding .thread {
+      width: 7px;
+      box-shadow: 0 0 42px rgba(216, 169, 79, 0.76);
+      animation: threadPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes threadPulse {
+      0%, 100% { opacity: 0.72; }
+      50% { opacity: 1; }
+    }
+
+    .butterfly {
+      position: relative;
+      z-index: 3;
+      width: min(54vw, 250px);
+      aspect-ratio: 1.22;
+      transform: translateY(34px);
+      animation: breathe 3.4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: translateY(34px) scale(0.99); }
+      50% { transform: translateY(22px) scale(1.02); }
+    }
+
+    .wing {
+      position: absolute;
+      top: 8%;
+      width: 49%;
+      height: 78%;
+      border: 2px solid rgba(184, 111, 131, 0.36);
+      background:
+        radial-gradient(circle at 56% 34%, rgba(255, 255, 255, 0.8), transparent 21%),
+        radial-gradient(circle at 42% 56%, rgba(255, 217, 189, 0.76), transparent 34%),
+        linear-gradient(145deg, rgba(244, 197, 202, 0.9), rgba(216, 206, 244, 0.72), rgba(199, 222, 244, 0.68));
+      box-shadow: inset 0 0 34px rgba(255, 255, 255, 0.38), 0 16px 28px rgba(125, 111, 120, 0.13);
+      transition: transform 360ms ease;
+    }
+
+    .wing.left {
+      left: 2%;
+      border-radius: 62% 38% 58% 42%;
+      transform-origin: right center;
+      transform: rotate(-18deg) scaleX(0.82);
+    }
+
+    .wing.right {
+      right: 2%;
+      border-radius: 38% 62% 42% 58%;
+      transform-origin: left center;
+      transform: rotate(18deg) scaleX(0.82);
+    }
+
+    .holding .wing.left,
+    .active-motion .wing.left { transform: rotate(-29deg) scaleX(1); }
+
+    .holding .wing.right,
+    .active-motion .wing.right { transform: rotate(29deg) scaleX(1); }
+
+    .body {
+      position: absolute;
+      left: 50%;
+      top: 19%;
+      width: 13px;
+      height: 70%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: linear-gradient(180deg, #c1889b, #9f728e 44%, #d8a94f);
+      box-shadow: 0 0 18px rgba(216, 169, 79, 0.36);
+    }
+
+    .antenna {
+      position: absolute;
+      left: 50%;
+      top: 13%;
+      width: 78px;
+      height: 38px;
+      transform: translateX(-50%);
+      border-top: 2px solid rgba(184, 111, 131, 0.46);
+      border-radius: 50% 50% 0 0;
+    }
+
+    .fox {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      bottom: 17%;
+      width: min(24vw, 102px);
+      height: min(18vw, 76px);
+      transform: translateX(-50%);
+      opacity: 0.92;
+    }
+
+    .fox-body {
+      position: absolute;
+      inset: 26% 8% 10%;
+      border-radius: 52% 48% 46% 42%;
+      background: linear-gradient(145deg, #d98b58, #b96941);
+      box-shadow: 0 14px 26px rgba(185, 105, 65, 0.16);
+    }
+
+    .fox-head {
+      position: absolute;
+      left: 22%;
+      top: 0;
+      width: 45%;
+      height: 56%;
+      background: linear-gradient(145deg, #df9561, #b96941);
+      clip-path: polygon(0 52%, 22% 0, 44% 32%, 61% 10%, 100% 58%, 72% 100%, 27% 100%);
+    }
+
+    .fox-tail {
+      position: absolute;
+      right: 0;
+      top: 26%;
+      width: 38%;
+      height: 38%;
+      border-radius: 999px 999px 999px 8px;
+      background: linear-gradient(90deg, #b96941, #f0c6a6);
+      transform: rotate(-18deg);
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.76;
+    }
+
+    .star {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(216, 169, 79, 0.8);
+      box-shadow: 0 0 18px rgba(216, 169, 79, 0.48);
+      animation: softBlink 2.6s ease-in-out infinite;
+    }
+
+    @keyframes softBlink {
+      0%, 100% { transform: scale(0.76); opacity: 0.42; }
+      50% { transform: scale(1.18); opacity: 0.95; }
+    }
+
+    .light-orb {
+      position: absolute;
+      z-index: 5;
+      left: 14%;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff3af;
+      box-shadow: 0 0 28px rgba(216, 169, 79, 0.82);
+      opacity: 0;
+      transition: opacity 220ms ease;
+    }
+
+    .mode-light .light-orb {
+      opacity: 1;
+      animation: travel 4.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes travel {
+      from { left: 14%; transform: translateY(-8px); }
+      to { left: calc(86% - 20px); transform: translateY(8px); }
+    }
+
+    .gesture-pad {
+      position: absolute;
+      z-index: 8;
+      left: 50%;
+      bottom: 132px;
+      width: min(74vw, 360px);
+      min-height: 78px;
+      transform: translateX(-50%);
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(184, 111, 131, 0.34);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.42);
+      font: 700 13px/1.2 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(75, 59, 69, 0.56);
+      touch-action: none;
+    }
+
+    .holding .gesture-pad {
+      background: rgba(255, 243, 175, 0.48);
+      border-color: rgba(216, 169, 79, 0.64);
+      color: rgba(75, 59, 69, 0.78);
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) 54px;
+      gap: 10px;
+      align-items: center;
+      min-height: 58px;
+    }
+
+    .nav-button,
+    .panic-button {
+      min-height: 52px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.64);
+      border: 1px solid rgba(75, 59, 69, 0.1);
+      box-shadow: 0 10px 24px rgba(125, 111, 120, 0.13);
+      font: 800 18px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .panic-button {
+      grid-column: 2;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 239, 213, 0.72));
+      color: var(--rose-deep);
+    }
+
+    .nav-button:active,
+    .panic-button:active {
+      transform: translateY(1px);
+    }
+
+    .page-dots {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      bottom: 84px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(75, 59, 69, 0.2);
+    }
+
+    .dot.active {
+      width: 20px;
+      border-radius: 999px;
+      background: rgba(184, 111, 131, 0.62);
+    }
+
+    .hold-words {
+      position: absolute;
+      z-index: 9;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      padding: 12px 17px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.64);
+      box-shadow: 0 14px 36px rgba(125, 111, 120, 0.12);
+      font: 800 17px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--rose-deep);
+      opacity: 0;
+      transition: opacity 220ms ease;
+      pointer-events: none;
+    }
+
+    .holding .hold-words { opacity: 1; }
+
+    @media (max-height: 700px) {
+      .story-text {
+        min-height: 122px;
+        padding: 14px;
+      }
+
+      .line {
+        font-size: clamp(20px, 5.7vw, 29px);
+      }
+
+      .fox-note {
+        font-size: 12px;
+        bottom: 12px;
+      }
+
+      .gesture-pad {
+        bottom: 112px;
+        min-height: 66px;
+      }
+
+      .page-dots { bottom: 73px; }
+    }
+
+    @media (min-width: 760px) {
+      .story-text {
+        left: 34px;
+        right: 34px;
+        top: 28px;
+      }
+
+      .fox-note {
+        left: 34px;
+        right: 34px;
+      }
+
+      .world {
+        padding-top: 118px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="book mode-thread" id="book">
+    <div class="sky" aria-hidden="true">
+      <div class="cloud one"></div>
+      <div class="cloud two"></div>
+      <div class="cloud three"></div>
+    </div>
+
+    <section class="page" aria-label="Little Butterfly interaktives Buch">
+      <header class="topbar">
+        <div class="brand">Little Butterfly</div>
+        <div class="counter" id="counter">1 / 7</div>
+      </header>
+
+      <div class="scene" id="scene">
+        <article class="story-text">
+          <p class="chapter" id="chapter">Der Garten am Rand des Himmels</p>
+          <p class="line" id="line">Der kleine Schmetterling sitzt im warmen Gras. Über ihr ist Himmel. Aber ihre Flügel bleiben geschlossen.</p>
+        </article>
+
+        <div class="world" aria-hidden="true">
+          <div class="thread"></div>
+          <div class="butterfly">
+            <div class="antenna"></div>
+            <div class="wing left"></div>
+            <div class="wing right"></div>
+            <div class="body"></div>
+          </div>
+          <div class="fox">
+            <div class="fox-tail"></div>
+            <div class="fox-body"></div>
+            <div class="fox-head"></div>
+          </div>
+          <div class="light-orb"></div>
+          <div class="stars" id="stars"></div>
+        </div>
+
+        <div class="hold-words" id="holdWords">Finger. Sitz. Jetzt. Faden.</div>
+        <div class="gesture-pad" id="gesturePad">Finger hier halten</div>
+
+        <aside class="fox-note">
+          <span class="fox-icon" aria-hidden="true"></span>
+          <span id="foxText">Der Fuchs sagt: Ein Finger reicht. Wenn du den Faden hältst, bekommt dein Körper einen Ort.</span>
+        </aside>
+
+        <div class="page-dots" id="dots" aria-hidden="true"></div>
+      </div>
+
+      <footer class="bottom">
+        <button class="nav-button" id="prev" type="button" aria-label="Zurück">‹</button>
+        <button class="panic-button" id="threadOnly" type="button">Nur Faden</button>
+        <button class="nav-button" id="next" type="button" aria-label="Weiter">›</button>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const pages = [
+        {
+          chapter: "Der Garten am Rand des Himmels",
+          line: "Der kleine Schmetterling sitzt im warmen Gras. Über ihr ist Himmel. Aber ihre Flügel bleiben geschlossen.",
+          fox: "Der Fuchs sagt: Du musst heute nicht mutig sein. Ein Finger reicht. Wenn du den Faden hältst, bekommt dein Körper einen Ort.",
+          prompt: "Finger hier halten",
+          mode: "thread"
+        },
+        {
+          chapter: "Der goldene Faden",
+          line: "Der Fuchs legt den Faden nicht um sie. Er legt ihn zwischen sie. Nichts zieht. Etwas bleibt.",
+          fox: "Der Fuchs sagt: Verbindung ohne Druck beruhigt. Dein Körper darf merken: Ich bin nicht allein und nichts zwingt mich.",
+          prompt: "Faden halten",
+          mode: "thread"
+        },
+        {
+          chapter: "Der Wald der vielen Lichter",
+          line: "Sie kommen in einen Wald aus hellen Punkten. Manche sind nah, manche laut, manche wollen wichtig wirken.",
+          fox: "Der Fuchs sagt: Du musst nicht jedes Licht beachten. Wenn du langsam streichst, entsteht wieder Raum um dich.",
+          prompt: "Langsam streichen",
+          mode: "space"
+        },
+        {
+          chapter: "Die Brücke der Schwelle",
+          line: "Vor ihnen liegt eine schmale Brücke. Der Schmetterling zögert. Der Fuchs setzt sich neben sie.",
+          fox: "Der Fuchs sagt: Eine Schwelle ist nur ein Übergang. Langsam ist ein echtes Tempo.",
+          prompt: "Halten oder langsam schieben",
+          mode: "thread"
+        },
+        {
+          chapter: "Der erste Auftrieb",
+          line: "Dann hebt sich die Welt. Nicht schnell. Nicht böse. Nur anders. Die Luft beginnt, sie zu tragen.",
+          fox: "Der Fuchs sagt: Wenn es innen laut wird, helfen einfache Dinge. Finger. Sitz. Jetzt. Faden.",
+          prompt: "Nur halten",
+          mode: "thread"
+        },
+        {
+          chapter: "Das Licht zwischen links und rechts",
+          line: "Ein kleines Licht wandert langsam durch den Himmel. Der Schmetterling muss ihm nicht hinterher. Nur schauen.",
+          fox: "Der Fuchs sagt: Wenn dein Blick ruhig wandert, muss dein Inneres nicht an einer Stelle festkleben.",
+          prompt: "Dem Licht folgen",
+          mode: "light"
+        },
+        {
+          chapter: "Der Ort, der bleibt",
+          line: "Als sie landet, merkt der Schmetterling: Ankommen ist nicht das Gegenteil von Fliegen. Es ist ein Teil davon.",
+          fox: "Der Fuchs sagt: Der Faden bleibt. Nicht weil du ihn brauchst, sondern weil Liebe Wege merkt.",
+          prompt: "Faden halten",
+          mode: "thread"
+        }
+      ];
+
+      const book = document.getElementById("book");
+      const scene = document.getElementById("scene");
+      const chapterEl = document.getElementById("chapter");
+      const lineEl = document.getElementById("line");
+      const foxText = document.getElementById("foxText");
+      const counter = document.getElementById("counter");
+      const gesturePad = document.getElementById("gesturePad");
+      const holdWords = document.getElementById("holdWords");
+      const dots = document.getElementById("dots");
+      const stars = document.getElementById("stars");
+      const prev = document.getElementById("prev");
+      const next = document.getElementById("next");
+      const threadOnly = document.getElementById("threadOnly");
+
+      let index = 0;
+      let holdStep = 0;
+      let holdTimer = null;
+      const words = ["Finger.", "Sitz.", "Jetzt.", "Faden.", "Ich bin da."];
+
+      function buildStars() {
+        stars.innerHTML = "";
+        const points = [
+          [11, 31], [21, 61], [31, 44], [42, 70], [55, 34],
+          [68, 58], [79, 42], [87, 68], [17, 78], [74, 26]
+        ];
+        points.forEach(([x, y], i) => {
+          const star = document.createElement("span");
+          star.className = "star";
+          star.style.left = x + "%";
+          star.style.top = y + "%";
+          star.style.animationDelay = (i * 0.18) + "s";
+          stars.appendChild(star);
+        });
+      }
+
+      function buildDots() {
+        dots.innerHTML = "";
+        pages.forEach((_, i) => {
+          const dot = document.createElement("span");
+          dot.className = "dot" + (i === index ? " active" : "");
+          dots.appendChild(dot);
+        });
+      }
+
+      function render() {
+        const page = pages[index];
+        chapterEl.textContent = page.chapter;
+        lineEl.textContent = page.line;
+        foxText.textContent = page.fox;
+        gesturePad.textContent = page.prompt;
+        counter.textContent = `${index + 1} / ${pages.length}`;
+        book.className = `book mode-${page.mode}`;
+        prev.disabled = index === 0;
+        next.disabled = index === pages.length - 1;
+        prev.style.opacity = index === 0 ? "0.35" : "1";
+        next.style.opacity = index === pages.length - 1 ? "0.35" : "1";
+        buildDots();
+      }
+
+      function go(delta) {
+        index = Math.max(0, Math.min(pages.length - 1, index + delta));
+        stopHold();
+        render();
+      }
+
+      function startHold(event) {
+        event.preventDefault();
+        scene.classList.add("holding", "active-motion");
+        holdStep = 0;
+        holdWords.textContent = words[holdStep];
+        clearInterval(holdTimer);
+        holdTimer = setInterval(() => {
+          holdStep = (holdStep + 1) % words.length;
+          holdWords.textContent = words[holdStep];
+        }, 950);
+      }
+
+      function stopHold() {
+        scene.classList.remove("holding");
+        clearInterval(holdTimer);
+        holdTimer = null;
+        window.setTimeout(() => scene.classList.remove("active-motion"), 800);
+      }
+
+      function threadMode() {
+        index = 4;
+        render();
+        scene.classList.add("active-motion");
+        window.setTimeout(() => scene.classList.remove("active-motion"), 900);
+      }
+
+      prev.addEventListener("click", () => go(-1));
+      next.addEventListener("click", () => go(1));
+      threadOnly.addEventListener("click", threadMode);
+
+      gesturePad.addEventListener("pointerdown", startHold);
+      gesturePad.addEventListener("pointerup", stopHold);
+      gesturePad.addEventListener("pointercancel", stopHold);
+      gesturePad.addEventListener("pointerleave", stopHold);
+      gesturePad.addEventListener("touchstart", startHold, { passive: false });
+      gesturePad.addEventListener("touchend", stopHold);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") go(1);
+        if (event.key === "ArrowLeft") go(-1);
+      });
+
+      buildStars();
+      render();
+    })();
+  </script>
+</body>
+</html>
