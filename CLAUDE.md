@@ -3,43 +3,45 @@
 Diese Datei gibt einer künftigen Claude-Session den nötigen Kontext, um an dieser
 App weiterzuarbeiten oder eine ähnliche neu zu bauen. Bitte zuerst vollständig lesen.
 
+> **Stand der Doku:** Diese Datei beschreibt die **tatsächliche finale `index.html`**
+> (intern früher „Little Butterfly” genannt, jetzt einheitlich „Wieder fliegen”).
+> Eine ältere, größere Konzeptversion mit Kapitel-/Modul-System existiert in diesem
+> Repo NICHT — falls in alten Notizen davon die Rede ist, gilt diese Datei hier.
+
 -----
 
-## AUFTRAG AN CLAUDE CODE (zuerst lesen)
+## AUFTRAG / HOSTING (zuerst lesen)
 
-Der Nutzer möchte dieses Projekt dauerhaft auf **GitHub** sichern und über einen
-**dauerhaften öffentlichen Link** verfügbar machen. Konkret:
+Ziel: das Projekt dauerhaft auf **GitHub** sichern und über einen **dauerhaften
+öffentlichen Link** verfügbar machen.
 
-1. Lege ein neues GitHub-Repository an (z. B. `wieder-fliegen`).
-1. Benenne die mitgelieferte `Wieder_fliegen.html` in **`index.html`** um (oder
-   committe sie zusätzlich als `index.html`). GitHub Pages liefert automatisch die
+1. `index.html` ist bereits korrekt benannt — GitHub Pages liefert automatisch die
    Datei namens `index.html` aus.
-1. Lege auch `CLAUDE.md` und `Konzept-Begleit-Apps.md` mit ins Repo (Doku/Kontext).
-1. Aktiviere **GitHub Pages** (Branch `main`, Ordner `/root`) und nenne dem Nutzer
-   den fertigen Link (Form: `https://<user>.github.io/<repo>/`).
-1. **WICHTIG — Banner-Anpassung:** GitHub Pages hat KEIN Werbebanner (anders als
-   tiiny.host, wofür die App zuletzt gebaut wurde). Setze deshalb im CSS im `:root`
-   den Wert `--banner:120px` auf `--banner:0px`. Dann sitzt die fixierte
-   „weiter”-Leiste wieder bündig unten, ohne reservierten Banner-Abstand.
-   (Falls später doch wieder über tiiny gehostet wird: zurück auf ~120px.)
-1. Sonst inhaltlich NICHTS ändern — die App ist fertig und durchgetestet. Bitte die
-   Designprinzipien und Sicherheits-Leitplanken weiter unten respektieren.
+1. `CLAUDE.md`, `README.md` und `Konzept-Begleit-Apps.md` bleiben als Doku/Kontext im Repo.
+1. **GitHub Pages** aktivieren (Branch `main`, Ordner `/root`) und dem Nutzer den
+   fertigen Link nennen (Form: `https://<user>.github.io/<repo>/`).
+1. Inhaltlich nur ändern, was ausdrücklich gewünscht ist — die App ist fertig und
+   durchgetestet. Designprinzipien und Sicherheits-Leitplanken (unten) immer respektieren.
 
------
+> **Hinweis zum Layout:** Diese Version arbeitet vollflächig (`100dvh`, fixierte
+> Buttonleiste unten) und reserviert KEINEN Platz für ein Hosting-Banner. Wenn später
+> über einen Anbieter mit unterem Werbebanner (z. B. tiiny.host) gehostet wird, müsste
+> man der `.bottom`-Leiste manuell etwas Abstand nach unten geben.
 
 -----
 
 ## Was das hier ist
 
-Eine einzelne, offline-fähige HTML-Datei (`Wieder_fliegen.html`), die als
-interaktives Bilderbuch für Erwachsene funktioniert. Sie begleitet eine Person mit
-Flugangst (Hintergrund: komplexe PTBS) durch die Reise vom Vorabend bis nach der
-Landung. Eingebettet sind — bewusst unbenannt — Übungen aus EMDR und Somatic
-Experiencing, verpackt als Geschichte über einen Schmetterling (die Nutzerin) und
-einen Fuchs (ihr Seelenpartner, der durch die Übungen führt und erklärt, warum sie wirken).
+Eine einzelne, offline-fähige HTML-Datei (`index.html`), die als interaktives
+Bilderbuch für Erwachsene funktioniert. Sie begleitet eine Person mit Flugangst
+(Hintergrund: komplexe PTBS) durch eine ruhige, sinnbildliche Reise — vom Sitzen im
+Gras über das Abheben bis zum Ankommen. Eingebettet sind — bewusst unbenannt —
+beruhigende Elemente aus EMDR und Somatic Experiencing, verpackt als Geschichte über
+einen Schmetterling (die Nutzerin) und einen Fuchs (ihr Seelenpartner, der sie führt).
 
 Das Geschenk ist von einer dem Empfänger nahestehenden Person; die „verbundene Seele”
-(der Fuchs) ist eine subtile, namenlose Repräsentation dieser Verbindung.
+(der Fuchs) ist eine subtile, namenlose Repräsentation dieser Verbindung. Verbunden
+sind beide durch einen **goldenen Faden** — Verbindung ohne Druck.
 
 ## Wichtigste Designprinzipien (nicht verletzen)
 
@@ -47,12 +49,10 @@ Das Geschenk ist von einer dem Empfänger nahestehenden Person; die „verbunden
    bearbeitet NICHT das Trauma. Bei komplexer PTBS kann zu schnelles „Reinspüren”
    oder unkontrollierte bilaterale Stimulation schaden. Alles bleibt im
    Wohlfühl-Fenster, alles ist überspringbar, nichts erzeugt Druck.
-1. **Wahlfreiheit & sanfte Führung zugleich.** Die Nutzerin wird geführt (sie weiß
-   immer, welches Kapitel wann dran ist), aber nichts zwingt sie. „es ist viel” ist
-   immer erreichbar.
+1. **Wahlfreiheit & sanfte Führung zugleich.** Die Nutzerin wird geführt (Seite für
+   Seite), aber nichts zwingt sie. Der „Nur Faden”-Knopf ist immer erreichbar.
 1. **Subtilität.** Die persönliche Verbindung (Fuchs) und die Methoden (EMDR/SE)
-   werden nie benannt. Es soll ssich „wahr” anfühlen, nicht therapeutisch oder
-   konstruiert.
+   werden nie benannt. Es soll sich „wahr” anfühlen, nicht therapeutisch oder konstruiert.
 1. **Die Nutzerin ist „sie”.** Der Schmetterling ist grammatisch maskulin („der
    Schmetterling”), aber alle Pronomen sind weiblich. Der Fuchs ist „er”.
 1. **Ton:** warm, gedeckt, erwachsen. Deutsch. Keine Kindersprache.
@@ -60,75 +60,88 @@ Das Geschenk ist von einer dem Empfänger nahestehenden Person; die „verbunden
 ## Technische Eckpfeiler
 
 - **Eine einzige `.html`-Datei**, kein externes Laden, voll offline-fähig.
-- Kein `localStorage`-Zugriff ohne `try/catch` (manche In-App-Browser werfen sonst
-  Fehler beim bloßen Zugriff → ganzer Start bricht ab). Es gibt ein `mem{}`-Fallback.
-- Fortschritt wird unter `sf_done` gespeichert (erledigte Kapitel-IDs).
-- Farbpalette als CSS-Variablen im `:root` (warmes Creme/Clay/Rosé/Mauve/Teal,
-  „Anthropic-Homepage, nur femininer”).
-- Handgezeichnet wirkende SVG-Illustrationen mit `filter:url(#rough)`
-  (feTurbulence + feDisplacementMap). Alle in `const ILLUS = {…}`.
-- Übungen sind „Module” (`#mod-breath`, `#mod-fly`, `#mod-here`, `#mod-still`,
-  `#mod-haven`, `#mod-safe`, `#mod-tap`), die per `mountModule()` in die jeweilige
-  Buchseite eingehängt werden.
+- Reines HTML/CSS/JS in einer IIFE (`(() => { … })()`). Keine Frameworks, keine Build-Tools.
+- **Kein `localStorage`, kein Fortschritt-Speichern** in dieser Version — die Reise
+  ist kurz (7 Seiten) und wird in einem Zug gelesen. (Falls Persistenz gewünscht wird:
+  immer in `try/catch` mit `mem{}`-Fallback, weil manche In-App-Browser schon beim
+  bloßen Zugriff auf `localStorage` werfen.)
+- Farbpalette als **CSS-Variablen im `:root`** (warmes Creme/Rosé/Pfirsich/Sky/Mint/
+  Lavendel/Gold, Tinte/Soft als Textfarben, Fuchs-Orange).
+- **Grafik ist reines CSS**, keine externen Bilder und keine SVG-Rauh-Filter: Schmetterling
+  (zwei `.wing`, `.body`, `.antenna`), Fuchs (`.fox-head/-body/-tail` via `clip-path`),
+  goldener `.thread`, treibende `.cloud`s, `.star`s und ein wandernder `.light-orb`.
+- Höhen mit **`dvh`** (dynamic viewport height) und `env(safe-area-inset-*)` für iPhone-Notch.
+- Responsiv über zwei Media-Queries: `max-height:700px` (kompakter) und `min-width:760px` (luftiger).
 
 ## Struktur der Geschichte (Datenmodell)
 
-Die ganze Erzählung steckt in `const CHAPTERS = [...]`. Jedes Kapitel:
+Die ganze Erzählung steckt in einem flachen Array `const pages = [ … ]`. Jede Seite:
 
 ```
-{ id:'cN', icon:'🌙', when:'Wann im echten Leben', title:'…', pages:[ …Seiten… ] }
+{ chapter:'Kapitelüberschrift', line:'Erzähltext', fox:'Der Fuchs sagt: …',
+  prompt:'Beschriftung der Halte-Geste', mode:'thread'|'space'|'light' }
 ```
 
-Seitentypen:
+- `chapter` — kleine Überschrift oben (Kapitelname)
+- `line` — der große Erzählsatz
+- `fox` — was der Fuchs auf dieser Seite sagt (Sprechblase unten)
+- `prompt` — Text auf dem `gesture-pad` („Finger hier halten” o. Ä.)
+- `mode` — steuert die Szene-Animation (siehe unten); wird als Klasse
+  `book.mode-<mode>` gesetzt
 
-- `{t:'story', h:'<p>…</p>', img:'illusKey', soar:true?}` — Erzählung (optional Bild/Flug-Animation)
-- `{t:'fox',   h:'…'}` — der Fuchs spricht (Sprechblase)
-- `{t:'ex',    ex:'breath'|'fly'|'here'|'still'|'haven'|'safe'|'tap', lead:'…'}` — Übung
-- `{t:'rest',  h:'…', last:true?}` — Kapitelende; sagt, was jetzt zu tun ist & wann wiederkommen
+Die 7 Seiten (in Reihenfolge):
 
-Reihenfolge entspricht dem echten Zeitverlauf:
+1. **Der Garten am Rand des Himmels** (thread) — Ankommen, Flügel noch geschlossen.
+1. **Der goldene Faden** (thread) — Verbindung ohne Druck.
+1. **Der Wald der vielen Lichter** (space) — Reizüberflutung, Raum schaffen.
+1. **Die Brücke der Schwelle** (thread) — der Übergang, langsam ist ein echtes Tempo.
+1. **Der erste Auftrieb** (thread) — das Abheben; Ankerseite des „Nur Faden”-Knopfs.
+1. **Das Licht zwischen links und rechts** (light) — ruhiges Augenfolgen (EMDR, entschärft).
+1. **Der Ort, der bleibt** (thread) — Landung/Ankommen, der Faden bleibt.
 
-1. 🌙 Der Abend davor — sicherer Ort + Atem (Einschlafen)
-1. 🌅 Der Morgen — 5-4-3-2-1 Erden (als Werkzeug gg. Gedankenkarussell übergeben)
-1. 🌫️ Im Gewimmel — ruhiger Punkt (Flughafen/Menschenmenge)
-1. 🪶 Das Abheben — EMDR (Augenfolgen, zügig) + Butterfly Tapping (Werkzeug, langsam)
-1. ☁️ Über den Wolken — „Worte, die mitfliegen”
-1. 🌿 Die Landung — Abschluss, glückliches Wiedersehen
+## Die Mechanik (Übungen, unbenannt eingewoben)
 
-## Die Übungen (Mechanik)
-
-- **breath** (Atem): Schmetterlingsflügel öffnen/schließen, 4 s ein / kurz halten / 6 s aus.
-- **safe** (Sicherer Ort): geführte Vorstellung in 7 Schritten, durchtippen. Nur geführt,
-  KEIN Texteingabefeld (bewusste Entscheidung).
-- **here** (5-4-3-2-1): Sinne-Countdown, durchtippen. Wird als „behaltbares Werkzeug” übergeben.
-- **still** (ruhiger Punkt): ruhiger, pulsierender Lichtpunkt zum Blick-Ausruhen.
-- **fly** (EMDR): EIN wandernder Lichtpunkt links↔rechts, ~0,85 s, mit den AUGEN folgen.
-  Wichtig: die früher vorhandenen zwei Tap-Felder wurden ENTFERNT (liefen nicht synchron).
-- **tap** (Butterfly Tapping): zwei „Hände” leuchten abwechselnd, langsamer Takt ~1,1 s,
-  Hände auf Schultern (überkreuzt) ODER Oimproberschenkel. Als Werkzeug „für wenn die Angst
-  kommt” übergeben — bewusst getrennt von EMDR, weil anderes Tempo/Zweck.
+- **Halte-Geste (`gesture-pad`):** Finger auf die Fläche legen und halten
+  (`pointerdown`/`touchstart` → `startHold`). Dabei bekommt `.scene` die Klassen
+  `holding active-motion` (Flügel öffnen sich, Faden pulsiert), und in `holdWords`
+  zyklen alle ~950 ms die beruhigenden Worte aus `const words`
+  (`"Finger." → "Sitz." → "Jetzt." → "Faden." → "Ich bin da."`). Loslassen → `stopHold`.
+  Das ist die Erdungs-/Ressourcen-Geste (Somatic Experiencing): Verbindung + Jetzt.
+- **`mode:'light'` (EMDR, entschärft):** ein einzelner `.light-orb` wandert langsam
+  links↔rechts (CSS-Animation `travel`). Mit den AUGEN folgen, nichts „tun”. Bewusst
+  ohne Belastungsfokus.
+- **`mode:'space'`:** Szene für „den Raum wieder weit werden lassen” bei Reizflut.
+- **„Nur Faden”-Knopf (`threadOnly` → `threadMode`):** der jederzeit erreichbare
+  Ruhe-Anker. Springt direkt auf Seite 5 („Der erste Auftrieb”) mit der schlichten
+  Botschaft „Finger. Sitz. Jetzt. Faden.” — das Äquivalent zum „es ist viel”-Moment.
+- **Navigation:** `‹ / ›`-Buttons (`prev`/`next`), zusätzlich Pfeiltasten links/rechts;
+  Punkt-Indikator (`.page-dots`) zeigt die aktuelle Seite.
 
 ## „Verbundene Seele” — wie subtil eingewoben
 
-- Eröffnung: ein warmer Abend, der Fuchs wartet und „spürt, dass sie ihn heute braucht”.
-- Durchgehend: der Fuchs läuft beim Flug unten am Boden mit, verliert sie nie aus dem Blick;
-  über den Wolken sehen sie einander → „Ich bin nicht allein. Ich war es nie.”
-- Leise „Hauche” (whisper()) in Schlüsselmomenten: „Ich bin hier.” / „Atme — ich halt dich.”
-- Eine kaum sichtbare warme Aura (CSS, `auraPulse`) pulsiert im Hintergrund.
-- NIE mit Namen, nie ausgesprochen. Der Empfänger soll es fühlen, nicht lesen.
+- Der Fuchs ist auf jeder Seite präsent (Szene unten) und spricht in jeder
+  Fuchs-Sprechblase warm und erklärend.
+- Der **goldene Faden** liegt sichtbar zwischen Schmetterling und Fuchs — „nicht um sie,
+  sondern zwischen sie. Nichts zieht. Etwas bleibt.” Beim Halten pulsiert er stärker.
+- Wiederkehrende leise Worte beim Halten: „Finger. Sitz. Jetzt. Faden. Ich bin da.”
+- Schluss-Botschaft: „Der Faden bleibt. Nicht weil du ihn brauchst, sondern weil Liebe
+  Wege merkt.” — NIE mit Namen, nie ausgesprochen. Fühlbar, nicht erklärt.
 
-## Wichtige Funktionen im Code
+## Wichtige Funktionen im Code (alles in der IIFE)
 
-- `beginBook()` → `startIntro()` → Intro-Seiten → `openMap()`
-- `openMap()` zeigt „Die Reise” (Kapitel-Übersicht); `suggestedChapter()` bestimmt das
-  nächste offene Kapitel; das aktuelle leuchtet, erledigte haben ✓.
-- `openChapter(i)` / `renderPage()` / `pageNext()` / `pagePrev()`
-- `markDone(id)` & `markCurrentChapterDone()` — Kapitel gilt als erledigt, sobald die
-  Übung gesehen/gemacht wurde (NICHT erst auf der letzten Seite — das war ein Bug).
-  WICHTIG: `pageNext()` markiert bei `t:'ex'`; breath/here/fly markieren zusätzlich beim
-  Abschluss, damit „Handy nach der Übung weglegen” (Abend) korrekt zählt.
-- `sosOpen()` / `sosClose()` — der „es ist viel”-Ruhemoment (führt in Atem, kehrt zurück).
-- `resetBook()` — setzt Fortschritt zurück, zurück aufs Cover.
+- `buildStars()` — streut die `.star`-Punkte in die Szene.
+- `buildDots()` — baut den Seiten-Indikator passend zur aktuellen `index`.
+- `render()` — schreibt die aktuelle Seite (chapter/line/fox/prompt/counter), setzt
+  `book.className = "book mode-<mode>"`, aktiviert/deaktiviert die Nav-Buttons.
+- `go(delta)` — eine Seite vor/zurück (mit Clamping), stoppt laufendes Halten.
+- `startHold(event)` / `stopHold()` — Halte-Geste an/aus (Klassen + Wort-Zyklus).
+- `threadMode()` — der „Nur Faden”-Sprung auf die Anker-Seite (`index = 4`).
+
+## Alles Persönliche an EINER Stelle
+
+Der gesamte Text steckt im `const pages`-Array (chapter/line/fox/prompt) sowie im
+`const words`-Array (die Halte-Worte). Dort wird angepasst, was inhaltlich/persönlich
+geändert werden soll. Bewusst ohne Namen/Unterschrift gehalten.
 
 ## Layout / Distribution — schmerzhaft gelernte Lektionen
 
@@ -136,32 +149,12 @@ Reihenfolge entspricht dem echten Zeitverlauf:
   zuverlässig öffnen — iOS zeigt nur eine statische Vorschau (Quick Look), führt kein JS
   aus, und beim Speichern geht die `.html`-Endung oft verloren. Das ist eine Apple-Sperre,
   KEIN Code-Fehler. → **Lösung: über einen Link ausliefern.**
-- **Empfohlener Weg:** als Link hosten (tiiny.host hat am iPhone gut funktioniert;
-  Alternativen: Netlify Drop am Computer, GitHub Pages, Artefakt „Veröffentlichen” in Claude).
+- **Empfohlener Weg:** als Link hosten (GitHub Pages für dauerhaft; Alternativen:
+  Netlify Drop am Computer, tiiny.host, Artefakt „Veröffentlichen” in Claude).
   Link in Telegram schicken → ein Tipp → öffnet im echten Browser. Danach „Zum
   Home-Bildschirm hinzufügen” = App-Gefühl + offline.
-- **tiiny.host-Banner:** Die Gratis-Version blendet unten ein Banner ein. Deshalb sitzt die
-  fixierte Button-Leiste (`.bottombar`) per `position:fixed; bottom:var(--banner)` ÜBER dem
-  Banner. `--banner` (im `:root`) steuert den Abstand in EINER Zahl (aktuell 120px).
-  Wenn ohne Banner gehostet wird, `--banner` auf 0 setzen.
-- **`.book`** ist scrollbar und oben ausgerichtet (`justify-content:flex-start`), nicht
-  zentriert — sonst quillt langer Inhalt oben UND unten raus und der Button verschwindet.
-- Höhen mit `svh` (small viewport height) verwenden, nicht `vh`.
-
-## Test-Schalter & aktueller Stand
-
-`const SHOW_RESET` (im Block „EINSTELLUNGEN”) blendet einen schwebenden Test-„von vorn”-Knopf
-ein. **Aktuell `false`.** Der dauerhafte „↺ Die Geschichte von vorn” steht ohnehin als
-sichtbarer Button auf der Reise-Übersicht (Map) und ist für die Nutzerin gedacht.
-
-`--banner` im `:root` steht aktuell auf **120px** (für tiiny.host-Banner). Für GitHub Pages
-auf **0px** setzen (siehe Auftrag oben).
-
-## Alles Persönliche an EINER Stelle
-
-Im `<script>` ganz oben unter „EINSTELLUNGEN”: Titel, Untertitel, MESSAGES (Worte über den
-Wolken), FOX_WHISPERS, CALM_FOX, SAFE_STEPS, sowie der Erzähltext in CHAPTERS. Bewusst ohne
-Namen/Unterschrift gehalten.
+- Die App ist vollflächig (`100dvh`), die Buttonleiste ist unten fixiert. Es ist KEIN
+  Platz für ein Hosting-Banner reserviert (siehe Hosting-Hinweis oben).
 
 ## Sicherheits- / Sorgfaltshinweise
 

@@ -2,15 +2,14 @@
 
 Ein interaktives Begleitbuch für Erwachsene — eine warme Geschichte über einen
 Schmetterling (die Nutzerin) und einen Fuchs (ihren Seelenpartner), der sie durch
-sanfte Selbstregulations-Übungen bei Flugangst begleitet. Die Übungen stammen
-(unbenannt) aus EMDR und Somatic Experiencing und sind in eine durchgeführte,
-zeitlich getaktete Erzählung eingebettet.
+sanfte Selbstregulation bei Flugangst begleitet. Verbunden sind beide durch einen
+goldenen Faden. Die beruhigenden Elemente stammen (unbenannt) aus EMDR und Somatic
+Experiencing und sind in eine ruhige, sinnbildliche Reise in 7 Seiten eingebettet.
 
 ## Dateien in diesem Repo
 
 - **`index.html`** — die fertige App (eine einzige, offline-fähige HTML-Datei).
-  *(Identisch mit `Wieder_fliegen.html`; `index.html` ist der Name, den GitHub Pages
-  zum Ausliefern braucht.)*
+  *(`index.html` ist der Name, den GitHub Pages zum Ausliefern braucht.)*
 - **`CLAUDE.md`** — vollständiger Projektkontext + Arbeitsanweisungen für Claude/Claude Code.
   **Bitte zuerst lesen**, bevor etwas geändert wird.
 - **`Konzept-Begleit-Apps.md`** — wiederverwendbare Blaupause, um ähnliche Apps zu
@@ -25,12 +24,12 @@ zeitlich getaktete Erzählung eingebettet.
 1. Diesen Link verschicken (z. B. Telegram). Empfängerin tippt drauf → öffnet im
    Browser → optional „Zum Home-Bildschirm hinzufügen” = App-Gefühl + offline.
 
-## Wichtig bei GitHub Pages: Banner-Wert
+## Hinweis zum Layout / Hosting-Banner
 
-Die App wurde zuletzt für tiiny.host gebaut, das unten ein Werbebanner einblendet.
-Dafür reserviert das CSS unten Platz über die Variable `--banner` (aktuell `120px`).
-**GitHub Pages hat kein Banner** → im `:root` `--banner:120px` auf `--banner:0px`
-setzen, dann sitzt die „weiter”-Leiste bündig unten.
+Die App ist vollflächig gebaut (`100dvh`, fixierte „weiter”-Leiste unten) und reserviert
+**keinen** Platz für ein Werbebanner. GitHub Pages hat ohnehin kein Banner — passt also.
+Falls später über einen Anbieter mit unterem Werbebanner gehostet wird (z. B. tiiny.host),
+müsste man der unteren Buttonleiste manuell etwas Abstand geben.
 
 ## Bitte beachten
 
