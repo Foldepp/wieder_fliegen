@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#eef6e3">
+  <title>Der Baum, der wachsen darf</title>
+  <style>
+    :root {
+      --paper: #f6faef;
+      --paper-warm: #eef6e3;
+      --leaf: #8fb072;
+      --leaf-deep: #5c7a52;
+      --bark: #9a6f4e;
+      --gold: #d8a94f;
+      --sky: #cfe3c2;
+      --ink: #3f4736;
+      --soft: #6e7363;
+      --moss-deep: #536b3c;
+      --bloom: #c98a5b;
+      --line: rgba(63, 71, 54, 0.14);
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      color: var(--ink);
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(216, 169, 79, 0.42), transparent 18rem),
+        radial-gradient(circle at 86% 12%, rgba(143, 176, 114, 0.52), transparent 20rem),
+        radial-gradient(circle at 80% 82%, rgba(143, 176, 114, 0.46), transparent 22rem),
+        linear-gradient(160deg, #f6faef 0%, #eef6e3 46%, #f3f7e8 100%);
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      min-height: 100dvh;
+      touch-action: manipulation;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .book {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    .sky {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .cloud {
+      position: absolute;
+      width: 18rem;
+      height: 7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.42);
+      filter: blur(1px);
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    .cloud.one { left: -4rem; top: 13%; }
+    .cloud.two { right: -6rem; top: 32%; width: 22rem; animation-duration: 23s; }
+    .cloud.three { left: 12%; bottom: 13%; width: 16rem; animation-duration: 27s; }
+
+    @keyframes drift {
+      from { transform: translateX(-12px); }
+      to { transform: translateX(28px); }
+    }
+
+    .page {
+      position: absolute;
+      inset: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 10px;
+      max-width: 720px;
+      margin: 0 auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(100vw - 24px, 720px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 38px;
+      padding: 0 2px;
+    }
+
+    .brand {
+      font: 700 13px/1.1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(63, 71, 54, 0.62);
+    }
+
+    .counter {
+      min-width: 70px;
+      text-align: right;
+      font: 600 12px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: rgba(63, 71, 54, 0.52);
+    }
+
+    .scene {
+      position: relative;
+      min-height: 0;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 10px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(238, 246, 227, 0.18)),
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.78), transparent 19rem);
+      box-shadow: 0 18px 54px rgba(83, 107, 60, 0.16);
+    }
+
+    .story-text {
+      position: absolute;
+      z-index: 6;
+      left: 18px;
+      right: 18px;
+      top: 16px;
+      min-height: 148px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.76);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.56);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 34px rgba(83, 107, 60, 0.11);
+    }
+
+    .chapter {
+      margin: 0 0 8px;
+      font: 700 12px/1.2 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--moss-deep);
+    }
+
+    .line {
+      margin: 0;
+      font-size: clamp(22px, 6.4vw, 34px);
+      line-height: 1.13;
+      color: var(--ink);
+    }
+
+    .voice-note {
+      position: absolute;
+      z-index: 7;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 13px 14px;
+      border-radius: 8px;
+      background: rgba(255, 251, 239, 0.8);
+      border: 1px solid rgba(216, 169, 79, 0.3);
+      box-shadow: 0 14px 32px rgba(83, 107, 60, 0.12);
+      font: 14px/1.35 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--soft);
+    }
+
+    .voice-icon {
+      width: 44px;
+      height: 44px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .voice-icon::before {
+      content: "";
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 42% 38%, #fff6cf, #f0c873 58%, #e0a94f);
+      box-shadow: 0 0 14px rgba(216, 169, 79, 0.5);
+    }
+
+    .world {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding-top: 72px;
+    }
+
+    /* das warme Licht / die Sonne — der namenlose Begleiter */
+    .sun {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 9%;
+      width: min(22vw, 92px);
+      aspect-ratio: 1;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 246, 207, 0.95), rgba(245, 207, 122, 0.6) 52%, rgba(245, 207, 122, 0));
+      animation: glow 5s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { transform: translateX(-50%) scale(0.96); opacity: 0.82; }
+      50% { transform: translateX(-50%) scale(1.06); opacity: 1; }
+    }
+
+    /* die junge Birke — die Leserin */
+    .tree {
+      position: relative;
+      z-index: 3;
+      width: min(50vw, 220px);
+      aspect-ratio: 0.95;
+      transform: translateY(14px);
+      transform-origin: 50% 100%;
+      transition: transform 600ms ease;
+    }
+
+    .holding .tree { transform: translateY(8px) scale(1.06); }
+
+    .tree-crown {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 66%;
+      aspect-ratio: 1;
+      transform: translateX(-50%);
+      border-radius: 54% 46% 50% 50%;
+      background:
+        radial-gradient(circle at 42% 34%, rgba(255, 255, 255, 0.6), transparent 32%),
+        radial-gradient(circle at 60% 64%, #9cc07f, #6f9a58 68%, var(--leaf-deep));
+      box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.24), 0 16px 30px rgba(83, 107, 60, 0.2);
+      animation: sway 4s ease-in-out infinite;
+    }
+
+    .tree-crown::before,
+    .tree-crown::after {
+      content: "";
+      position: absolute;
+      top: 26%;
+      width: 58%;
+      height: 58%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, #9cc07f, var(--leaf-deep));
+    }
+
+    .tree-crown::before { left: -24%; }
+    .tree-crown::after { right: -24%; }
+
+    @keyframes sway {
+      0%, 100% { transform: translateX(-50%) scale(0.99); }
+      50% { transform: translateX(-50%) scale(1.02); }
+    }
+
+    .trunk {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 13px;
+      height: 40%;
+      transform: translateX(-50%);
+      border-radius: 6px;
+      background: linear-gradient(180deg, #b0825a, var(--bark));
+      box-shadow: 0 8px 16px rgba(154, 111, 78, 0.2);
+    }
+
+    /* die Wurzeln / der Lichtfaden in den Boden */
+    .roots {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      bottom: -16%;
+      width: 3px;
+      height: 22%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(216, 169, 79, 0.85), rgba(216, 169, 79, 0.1));
+      box-shadow: 0 0 22px rgba(216, 169, 79, 0.42);
+      transition: width 240ms ease, box-shadow 240ms ease;
+    }
+
+    .holding .roots {
+      width: 7px;
+      box-shadow: 0 0 42px rgba(216, 169, 79, 0.76);
+      animation: rootGlow 1.8s ease-in-out infinite;
+    }
+
+    @keyframes rootGlow {
+      0%, 100% { opacity: 0.72; }
+      50% { opacity: 1; }
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .star {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(216, 169, 79, 0.78);
+      box-shadow: 0 0 16px rgba(216, 169, 79, 0.46);
+      animation: softBlink 2.8s ease-in-out infinite;
+    }
+
+    @keyframes softBlink {
+      0%, 100% { transform: scale(0.76); opacity: 0.4; }
+      50% { transform: scale(1.18); opacity: 0.9; }
+    }
+
+    /* warmer, mittiger Puls für die Selbstmitgefühl-Seiten */
+    .light-orb {
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      top: 47%;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 243, 175, 0.95), rgba(216, 169, 79, 0));
+      opacity: 0;
+      transition: opacity 220ms ease;
+    }
+
+    .mode-light .light-orb {
+      opacity: 1;
+      animation: warmPulse 3.6s ease-in-out infinite;
+    }
+
+    @keyframes warmPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.7); opacity: 0.4; }
+      50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.9; }
+    }
+
+    .gesture-pad {
+      position: absolute;
+      z-index: 8;
+      left: 50%;
+      bottom: 132px;
+      width: min(74vw, 360px);
+      min-height: 78px;
+      transform: translateX(-50%);
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(95, 122, 82, 0.36);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.42);
+      font: 700 13px/1.2 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(63, 71, 54, 0.56);
+      touch-action: none;
+    }
+
+    .holding .gesture-pad {
+      background: rgba(255, 243, 175, 0.48);
+      border-color: rgba(216, 169, 79, 0.64);
+      color: rgba(63, 71, 54, 0.78);
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) 54px;
+      gap: 10px;
+      align-items: center;
+      min-height: 58px;
+    }
+
+    .nav-button,
+    .panic-button {
+      min-height: 52px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.64);
+      border: 1px solid rgba(63, 71, 54, 0.1);
+      box-shadow: 0 10px 24px rgba(83, 107, 60, 0.13);
+      font: 800 18px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .panic-button {
+      grid-column: 2;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 239, 213, 0.72));
+      color: var(--bloom);
+    }
+
+    .nav-button:active,
+    .panic-button:active {
+      transform: translateY(1px);
+    }
+
+    .page-dots {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      bottom: 84px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(63, 71, 54, 0.2);
+    }
+
+    .dot.active {
+      width: 20px;
+      border-radius: 999px;
+      background: rgba(95, 122, 82, 0.62);
+    }
+
+    .hold-words {
+      position: absolute;
+      z-index: 9;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      padding: 12px 17px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.64);
+      box-shadow: 0 14px 36px rgba(83, 107, 60, 0.12);
+      font: 800 17px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--moss-deep);
+      opacity: 0;
+      transition: opacity 220ms ease;
+      pointer-events: none;
+    }
+
+    .holding .hold-words { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cloud, .sun, .tree-crown, .star, .light-orb { animation: none !important; }
+    }
+
+    @media (max-height: 700px) {
+      .story-text {
+        min-height: 122px;
+        padding: 14px;
+      }
+
+      .line {
+        font-size: clamp(20px, 5.7vw, 29px);
+      }
+
+      .voice-note {
+        font-size: 12px;
+        bottom: 12px;
+      }
+
+      .gesture-pad {
+        bottom: 112px;
+        min-height: 66px;
+      }
+
+      .page-dots { bottom: 73px; }
+    }
+
+    @media (min-width: 760px) {
+      .story-text {
+        left: 34px;
+        right: 34px;
+        top: 28px;
+      }
+
+      .voice-note {
+        left: 34px;
+        right: 34px;
+      }
+
+      .world {
+        padding-top: 118px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="book mode-roots" id="book">
+    <div class="sky" aria-hidden="true">
+      <div class="cloud one"></div>
+      <div class="cloud two"></div>
+      <div class="cloud three"></div>
+    </div>
+
+    <section class="page" aria-label="Der Baum, der wachsen darf — interaktives Buch">
+      <header class="topbar">
+        <div class="brand">Selbstwert</div>
+        <div class="counter" id="counter">1 / 7</div>
+      </header>
+
+      <div class="scene" id="scene">
+        <article class="story-text">
+          <p class="chapter" id="chapter">Im Schatten der Großen</p>
+          <p class="line" id="line">Die junge Birke steht zwischen hohen Bäumen. Sie macht sich schmal. Sie glaubt, sie müsse sich ihren Platz erst verdienen.</p>
+        </article>
+
+        <div class="world" aria-hidden="true">
+          <div class="sun"></div>
+          <div class="tree">
+            <div class="tree-crown"></div>
+            <div class="trunk"></div>
+            <div class="roots"></div>
+          </div>
+          <div class="light-orb"></div>
+          <div class="stars" id="stars"></div>
+        </div>
+
+        <div class="hold-words" id="holdWords">Hier. Ich bin. Genug.</div>
+        <div class="gesture-pad" id="gesturePad">Hand hier ablegen</div>
+
+        <aside class="voice-note">
+          <span class="voice-icon" aria-hidden="true"></span>
+          <span id="voiceText">Das Licht sagt: Du musst nicht größer werden, um zu zählen. Du darfst hier sein – einfach weil du hier bist.</span>
+        </aside>
+
+        <div class="page-dots" id="dots" aria-hidden="true"></div>
+      </div>
+
+      <footer class="bottom">
+        <button class="nav-button" id="prev" type="button" aria-label="Zurück">‹</button>
+        <button class="panic-button" id="restOnly" type="button">Nur atmen</button>
+        <button class="nav-button" id="next" type="button" aria-label="Weiter">›</button>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const pages = [
+        {
+          chapter: "Im Schatten der Großen",
+          line: "Die junge Birke steht zwischen hohen Bäumen. Sie macht sich schmal. Sie glaubt, sie müsse sich ihren Platz erst verdienen.",
+          voice: "Das Licht sagt: Du musst nicht größer werden, um zu zählen. Du darfst hier sein – einfach weil du hier bist.",
+          prompt: "Hand hier ablegen",
+          mode: "roots"
+        },
+        {
+          chapter: "Wurzeln, die schon da sind",
+          line: "Unter ihr, unsichtbar, halten Wurzeln den Boden. Sie waren immer da. Auch an den Tagen, an denen sie sich klein fühlte.",
+          voice: "Das Licht sagt: Dein Wert ist keine Belohnung. Er wuchs nie und schrumpfte nie. Er war von Anfang an da.",
+          prompt: "Wurzeln spüren",
+          mode: "roots"
+        },
+        {
+          chapter: "Die laute Stimme",
+          line: "Eine Stimme im Geäst wird laut: zu klein, zu wenig, zu still. Die Birke kennt sie gut.",
+          voice: "Das Licht sagt: Du musst der lauten Stimme nicht glauben. Wenn du langsam atmest, wird wieder Raum um sie herum.",
+          prompt: "Langsam atmen",
+          mode: "space"
+        },
+        {
+          chapter: "Was schon getragen hat",
+          line: "Die Birke erinnert sich an Tage, an denen sie genug war. Nicht perfekt. Genug. Kleine Tage, die sie trotzdem getragen haben.",
+          voice: "Das Licht sagt: Such nicht nach großen Beweisen. Ein einziger ruhiger Moment reicht, um es wieder zu wissen.",
+          prompt: "Einen Moment halten",
+          mode: "roots"
+        },
+        {
+          chapter: "Die Hand, die hält",
+          line: "Sie legt etwas Warmes an ihren Stamm – wie eine Hand, die bleibt. Nichts muss sich ändern. Es darf nur warm sein.",
+          voice: "Das Licht sagt: Leg eine Hand auf dein Herz. Spür die Wärme. Das bist du, die für dich da ist.",
+          prompt: "Hand aufs Herz",
+          mode: "light"
+        },
+        {
+          chapter: "Dem Licht entgegen",
+          line: "Langsam richtet sich die Birke auf. Nicht um zu gewinnen. Nur um zu wachsen – dem Licht entgegen, das immer schon für sie da war.",
+          voice: "Das Licht sagt: Raum einzunehmen ist kein Hochmut. Es ist nur ein Baum, der lebt.",
+          prompt: "Dehnen und atmen",
+          mode: "light"
+        },
+        {
+          chapter: "Der Satz, der bleibt",
+          line: "Am Abend bleibt ein einziger Satz in ihren Blättern hängen, leise und wahr: Ich darf da sein.",
+          voice: "Das Licht sagt: Nimm diesen Satz mit. Es gibt noch mehr Übungen – aber heute reicht dieser eine.",
+          prompt: "Satz halten",
+          mode: "roots"
+        }
+      ];
+
+      const book = document.getElementById("book");
+      const scene = document.getElementById("scene");
+      const chapterEl = document.getElementById("chapter");
+      const lineEl = document.getElementById("line");
+      const voiceText = document.getElementById("voiceText");
+      const counter = document.getElementById("counter");
+      const gesturePad = document.getElementById("gesturePad");
+      const holdWords = document.getElementById("holdWords");
+      const dots = document.getElementById("dots");
+      const stars = document.getElementById("stars");
+      const prev = document.getElementById("prev");
+      const next = document.getElementById("next");
+      const restOnly = document.getElementById("restOnly");
+
+      let index = 0;
+      let holdStep = 0;
+      let holdTimer = null;
+      const words = ["Hier.", "Ich bin.", "Genug.", "Ich darf da sein."];
+
+      function buildStars() {
+        stars.innerHTML = "";
+        const points = [
+          [11, 31], [21, 61], [31, 44], [42, 70], [55, 34],
+          [68, 58], [79, 42], [87, 68], [17, 78], [74, 26]
+        ];
+        points.forEach(([x, y], i) => {
+          const star = document.createElement("span");
+          star.className = "star";
+          star.style.left = x + "%";
+          star.style.top = y + "%";
+          star.style.animationDelay = (i * 0.18) + "s";
+          stars.appendChild(star);
+        });
+      }
+
+      function buildDots() {
+        dots.innerHTML = "";
+        pages.forEach((_, i) => {
+          const dot = document.createElement("span");
+          dot.className = "dot" + (i === index ? " active" : "");
+          dots.appendChild(dot);
+        });
+      }
+
+      function render() {
+        const page = pages[index];
+        chapterEl.textContent = page.chapter;
+        lineEl.textContent = page.line;
+        voiceText.textContent = page.voice;
+        gesturePad.textContent = page.prompt;
+        counter.textContent = `${index + 1} / ${pages.length}`;
+        book.className = `book mode-${page.mode}`;
+        prev.disabled = index === 0;
+        next.disabled = index === pages.length - 1;
+        prev.style.opacity = index === 0 ? "0.35" : "1";
+        next.style.opacity = index === pages.length - 1 ? "0.35" : "1";
+        buildDots();
+      }
+
+      function go(delta) {
+        index = Math.max(0, Math.min(pages.length - 1, index + delta));
+        stopHold();
+        render();
+      }
+
+      function startHold(event) {
+        event.preventDefault();
+        scene.classList.add("holding", "active-motion");
+        holdStep = 0;
+        holdWords.textContent = words[holdStep];
+        clearInterval(holdTimer);
+        holdTimer = setInterval(() => {
+          holdStep = (holdStep + 1) % words.length;
+          holdWords.textContent = words[holdStep];
+        }, 950);
+      }
+
+      function stopHold() {
+        scene.classList.remove("holding");
+        clearInterval(holdTimer);
+        holdTimer = null;
+        window.setTimeout(() => scene.classList.remove("active-motion"), 800);
+      }
+
+      // Ruhe-Anker: springt auf „Die Hand, die hält"
+      function restMode() {
+        index = 4;
+        render();
+        scene.classList.add("active-motion");
+        window.setTimeout(() => scene.classList.remove("active-motion"), 900);
+      }
+
+      prev.addEventListener("click", () => go(-1));
+      next.addEventListener("click", () => go(1));
+      restOnly.addEventListener("click", restMode);
+
+      gesturePad.addEventListener("pointerdown", startHold);
+      gesturePad.addEventListener("pointerup", stopHold);
+      gesturePad.addEventListener("pointercancel", stopHold);
+      gesturePad.addEventListener("pointerleave", stopHold);
+      gesturePad.addEventListener("touchstart", startHold, { passive: false });
+      gesturePad.addEventListener("touchend", stopHold);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") go(1);
+        if (event.key === "ArrowLeft") go(-1);
+      });
+
+      buildStars();
+      render();
+    })();
+  </script>
+</body>
+</html>
